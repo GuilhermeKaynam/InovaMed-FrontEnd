@@ -26,6 +26,7 @@
 
 ### Para Pacientes:
 - **Login**: Criação de conta com login simples para pacientes, que acessam um portal dedicado.
+  ![image](https://github.com/user-attachments/assets/895d7dc3-dac6-425b-bfcb-da5e4b6823c4)
 - **Página Inicial**: Apresentação da importância do cuidado com a saúde.
 - **Benefícios**: Exibição dos principais benefícios de ser paciente da InovaMed, como agendamento online e atendimento humanizado.
   ![image](https://github.com/user-attachments/assets/4f288619-789b-4a7e-9783-d5fbda6ef793)
