@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { AuthState, LoginCredentials } from '../types/auth';
 import { api } from '../services/api';
 
@@ -10,22 +10,35 @@ interface AuthContextType extends AuthState {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [auth, setAuth] = useState<AuthState>({
-    isAuthenticated: false,
-    user: null,
+  const [auth, setAuth] = useState<AuthState>(() => {
+    // Recupera o estado de autenticação do localStorage
+    const savedAuth = localStorage.getItem('auth');
+    if (savedAuth) {
+      return JSON.parse(savedAuth);
+    }
+    return {
+      isAuthenticated: false,
+      user: null,
+    };
   });
+
+  // Persiste o estado de autenticação no localStorage
+  useEffect(() => {
+    localStorage.setItem('auth', JSON.stringify(auth));
+  }, [auth]);
 
   const login = async (credentials: LoginCredentials) => {
     // Check admin credentials first
     if (credentials.email === 'admin@admin.com' && credentials.password === 'admin') {
-      setAuth({
+      const authState = {
         isAuthenticated: true,
         user: { 
           id: 'admin',
           email: credentials.email, 
           role: 'admin' 
         },
-      });
+      };
+      setAuth(authState);
       return true;
     }
 
@@ -33,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const user = await api.auth.validateCredentials(credentials.email, credentials.password);
       if (user) {
-        setAuth({
+        const authState = {
           isAuthenticated: true,
           user: {
             id: user.id || user.email,
@@ -41,7 +54,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             name: user.name,
             role: user.role
           },
-        });
+        };
+        setAuth(authState);
         return true;
       }
     } catch (error) {

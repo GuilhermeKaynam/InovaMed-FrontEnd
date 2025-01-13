@@ -1,5 +1,5 @@
-
-import {Clock, Shield, Calendar, FileText } from 'lucide-react';
+import React from 'react';
+import { Heart, Clock, Shield, Award, Calendar, FileText } from 'lucide-react';
 
 interface HomeProps {
   onNavigate: (view: string) => void;

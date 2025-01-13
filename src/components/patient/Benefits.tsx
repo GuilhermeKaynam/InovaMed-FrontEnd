@@ -1,3 +1,4 @@
+import React from 'react';
 import { Clock, Heart, Shield, Award, Stethoscope, Users } from 'lucide-react';
 
 export default function Benefits() {

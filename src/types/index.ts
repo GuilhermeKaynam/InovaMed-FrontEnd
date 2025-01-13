@@ -1,4 +1,3 @@
-
 export type InsuranceType = 'Unimed' | 'Bradesco Saúde' | 'SulAmérica' | 'Amil' | 'Particular';
 
 export type PaymentMethod = 'Cartão de Crédito' | 'Cartão de Débito' | 'PIX' | 'Boleto';
@@ -10,16 +9,13 @@ export type AppointmentType = 'Consulta Regular' | 'Retorno' | 'Exame' | 'Emerg�
 export type Gender = 'Masculino' | 'Feminino' | 'Outro';
 
 export interface Appointment {
-  id: string; // ID da consulta
-  patientId: string; // ID do paciente
-  patientName: string; // Nome do paciente
-  patientPhone: string; // Telefone do paciente
-  patientEmail: string; // Email do paciente
-  type: string; // Tipo da consulta
-  reason: string; // Motivo da consulta
-  status: AppointmentStatus; // Status da consulta
-  date: string; // Data da consulta
-  notes?: string; // Observações opcionais
+  id: string;
+  patientId: string;
+  type: AppointmentType;
+  reason: string;
+  status: AppointmentStatus;
+  notes?: string;
+  date: string;
 }
 
 export interface Patient {

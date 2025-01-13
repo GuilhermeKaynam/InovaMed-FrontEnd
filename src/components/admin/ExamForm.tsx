@@ -121,7 +121,7 @@ export default function ExamForm() {
           <select
             required
             value={formData.status}
-            onChange={(e) => setFormData({ ...formData, status: e.target.value as never })}
+            onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
           >
             <option value="Pendente">Pendente</option>

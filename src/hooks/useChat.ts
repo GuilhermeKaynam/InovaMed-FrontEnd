@@ -22,7 +22,6 @@ export function useChat() {
       const data = await chatApi.getConversations(user?.id || '', user?.role || '');
       setConversations(data);
       setLoading(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError('Erro ao carregar conversas');
       setLoading(false);
@@ -35,7 +34,6 @@ export function useChat() {
       const messages = await chatApi.getMessages(conversationId);
       setCurrentMessages(messages);
       setLoading(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError('Erro ao carregar mensagens');
       setLoading(false);
@@ -56,7 +54,6 @@ export function useChat() {
       setCurrentMessages(prev => [...prev, message]);
       await loadConversations();
       return message;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError('Erro ao enviar mensagem');
       return null;
@@ -73,7 +70,6 @@ export function useChat() {
       await loadConversations();
       await loadMessages(conversation.id);
       return conversation;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError('Erro ao iniciar conversa');
       return null;

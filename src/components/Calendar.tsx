@@ -3,13 +3,8 @@ import { useAppointments } from '../hooks/useAppointments';
 import { formatDateTime } from '../utils/date';
 import DeleteAppointmentModal from './admin/DeleteAppointmentModal';
 import { Trash2, AlertCircle } from 'lucide-react';
-import { Patient } from '../types';
 
-interface CalendarProps {
-  patients?: Patient[]; // Propriedade opcional
-}
-
-export default function Calendar({ patients }: CalendarProps) {
+export default function Calendar() {
   const { appointments, loading, error, deleteAppointment } = useAppointments();
   const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -26,6 +21,14 @@ export default function Calendar({ patients }: CalendarProps) {
       </div>
     );
   }
+
+  const handleDelete = async (reason: string) => {
+    if (selectedAppointment && reason) {
+      await deleteAppointment(selectedAppointment.id, reason);
+      setShowDeleteModal(false);
+      setSelectedAppointment(null);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
@@ -70,13 +73,7 @@ export default function Calendar({ patients }: CalendarProps) {
 
       {showDeleteModal && (
         <DeleteAppointmentModal
-          onConfirm={(reason) => {
-            if (selectedAppointment && reason) {
-              deleteAppointment(selectedAppointment.id, reason);
-              setShowDeleteModal(false);
-              setSelectedAppointment(null);
-            }
-          }}
+          onConfirm={handleDelete}
           onCancel={() => {
             setShowDeleteModal(false);
             setSelectedAppointment(null);

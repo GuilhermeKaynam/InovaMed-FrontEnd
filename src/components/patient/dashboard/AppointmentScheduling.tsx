@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
 import { DOCTORS } from '../../../constants/doctors';
 import { AppointmentType } from '../../../types';
 import { useAppointments } from '../../../hooks/useAppointments';
@@ -8,49 +8,38 @@ import { useAuth } from '../../../contexts/AuthContext';
 export default function AppointmentScheduling() {
   const { user } = useAuth();
   const { scheduleAppointment, error } = useAppointments();
-  const [appointment, setAppointment] = useState<{
-    date: string;
-    time: string;
-    doctor: string;
-    type: AppointmentType | '';
-    reason: string;
-  }>({
+  const [appointment, setAppointment] = useState({
     date: '',
     time: '',
     doctor: '',
-    type: '',
+    type: '' as AppointmentType,
     reason: ''
   });
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  const appointmentPayload: any = {
-    date: `${appointment.date}T${appointment.time}`,
-    type: appointment.type,
-    reason: appointment.reason,
-    status: 'Agendada',
-  };
-
-  if (user?.email) {
-    appointmentPayload.patientEmail = user.email;
-  }
-
-  const result = await scheduleAppointment(appointmentPayload);
-
-  if (result) {
-    setSuccess(true);
-    setAppointment({
-      date: '',
-      time: '',
-      doctor: '',
-      type: '',
-      reason: ''
+    e.preventDefault();
+    const result = await scheduleAppointment({
+      date: `${appointment.date}T${appointment.time}`,
+      doctor: appointment.doctor,
+      type: appointment.type,
+      reason: appointment.reason,
+      status: 'Agendada',
+      patientEmail: user?.email
     });
-    setTimeout(() => setSuccess(false), 3000);
-  }
-};
+
+    if (result) {
+      setSuccess(true);
+      setAppointment({
+        date: '',
+        time: '',
+        doctor: '',
+        type: '',
+        reason: ''
+      });
+      setTimeout(() => setSuccess(false), 3000);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">

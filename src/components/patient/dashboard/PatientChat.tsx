@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { useChat } from '../../../hooks/useChat';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -18,19 +18,17 @@ export default function PatientChat() {
 
   useEffect(() => {
     const initializeChat = async () => {
-      if (user?.id && user?.name && user?.email) {
+      if (user) {
         // Start or get existing conversation
         const conversation = await startConversation({
           patientId: user.id,
           patientName: user.name,
           patientEmail: user.email
         });
-
+        
         if (conversation) {
           loadMessages(conversation.id);
         }
-      } else {
-        console.error('Informações do usuário incompletas.');
       }
     };
 

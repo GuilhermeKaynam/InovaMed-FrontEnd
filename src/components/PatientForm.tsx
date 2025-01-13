@@ -57,6 +57,11 @@ export default function PatientForm({ onSubmit }: PatientFormProps) {
       newPatient.value = parseFloat(formData.value);
     }
 
+    // Salvar no localStorage
+    const savedPatients = JSON.parse(localStorage.getItem('patients') || '[]');
+    savedPatients.push(newPatient);
+    localStorage.setItem('patients', JSON.stringify(savedPatients));
+
     onSubmit(newPatient);
     
     // Reset form

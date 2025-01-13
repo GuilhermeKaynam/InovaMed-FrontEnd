@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { LayoutDashboard, Heart, Phone, UserPlus, LogOut } from 'lucide-react';
+import { LayoutDashboard, Heart, Phone, UserPlus, LogOut, Menu, X } from 'lucide-react';
 import Home from './Home';
 import Benefits from './Benefits';
 import Contact from './Contact';
@@ -10,10 +10,17 @@ import LandingPage from './LandingPage';
 
 export default function PatientWebsite() {
   const [currentPage, setCurrentPage] = useState('landing');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout, user } = useAuth();
 
   const navigateToDashboard = (view: string) => {
     setCurrentPage('dashboard');
+    setIsMenuOpen(false);
+  };
+
+  const handleNavigation = (page: string) => {
+    setCurrentPage(page);
+    setIsMenuOpen(false);
   };
 
   const renderPage = () => {
@@ -45,9 +52,18 @@ export default function PatientWebsite() {
               <span className="text-xl font-bold">InovaMed</span>
             </div>
             
-            <div className="flex space-x-4">
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 rounded-md hover:bg-white/10"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+
+            {/* Desktop navigation */}
+            <div className="hidden md:flex space-x-4">
               <button
-                onClick={() => setCurrentPage('landing')}
+                onClick={() => handleNavigation('landing')}
                 className={`px-3 py-2 rounded-md text-sm font-medium ${
                   currentPage === 'landing' ? 'bg-white/20' : 'hover:bg-white/10'
                 }`}
@@ -55,7 +71,7 @@ export default function PatientWebsite() {
                 Início
               </button>
               <button
-                onClick={() => setCurrentPage('benefits')}
+                onClick={() => handleNavigation('benefits')}
                 className={`px-3 py-2 rounded-md text-sm font-medium ${
                   currentPage === 'benefits' ? 'bg-white/20' : 'hover:bg-white/10'
                 }`}
@@ -63,7 +79,7 @@ export default function PatientWebsite() {
                 Benefícios
               </button>
               <button
-                onClick={() => setCurrentPage('contact')}
+                onClick={() => handleNavigation('contact')}
                 className={`px-3 py-2 rounded-md text-sm font-medium ${
                   currentPage === 'contact' ? 'bg-white/20' : 'hover:bg-white/10'
                 }`}
@@ -73,7 +89,7 @@ export default function PatientWebsite() {
               {user ? (
                 <>
                   <button
-                    onClick={() => setCurrentPage('dashboard')}
+                    onClick={() => handleNavigation('dashboard')}
                     className={`px-3 py-2 rounded-md text-sm font-medium ${
                       currentPage === 'dashboard' ? 'bg-white/20' : 'hover:bg-white/10'
                     }`}
@@ -89,7 +105,7 @@ export default function PatientWebsite() {
                 </>
               ) : (
                 <button
-                  onClick={() => setCurrentPage('register')}
+                  onClick={() => handleNavigation('register')}
                   className={`px-3 py-2 rounded-md text-sm font-medium ${
                     currentPage === 'register' ? 'bg-white/20' : 'hover:bg-white/10'
                   }`}
@@ -100,6 +116,55 @@ export default function PatientWebsite() {
             </div>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              <button
+                onClick={() => handleNavigation('landing')}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+              >
+                Início
+              </button>
+              <button
+                onClick={() => handleNavigation('benefits')}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+              >
+                Benefícios
+              </button>
+              <button
+                onClick={() => handleNavigation('contact')}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+              >
+                Contato
+              </button>
+              {user ? (
+                <>
+                  <button
+                    onClick={() => handleNavigation('dashboard')}
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+                  >
+                    Minha Área
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+                  >
+                    Sair
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => handleNavigation('register')}
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+                >
+                  Cadastro/Login
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </nav>
 
       <main>{renderPage()}</main>
